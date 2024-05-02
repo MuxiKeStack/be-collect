@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func InitGRPCxKratosServer(commentServer *grpc.CollectServiceServer, ecli *clientv3.Client, l logger.Logger) grpcx.Server {
+func InitGRPCxKratosServer(collectServer *grpc.CollectServiceServer, ecli *clientv3.Client, l logger.Logger) grpcx.Server {
 	type Config struct {
 		Name    string `yaml:"name"`
 		Weight  int    `yaml:"weight"`
@@ -28,7 +28,7 @@ func InitGRPCxKratosServer(commentServer *grpc.CollectServiceServer, ecli *clien
 		kgrpc.Middleware(recovery.Recovery()),
 		kgrpc.Timeout(100*time.Second), // TODO
 	)
-	commentServer.Register(server)
+	collectServer.Register(server)
 	return &grpcx.KratosServer{
 		Server:     server,
 		Name:       cfg.Name,
